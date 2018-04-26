@@ -10,7 +10,7 @@ FactoryBot.define do
     end
 
     trait :visa_card do
-      credit_card_number CreditCardValidations::Factory.random(:maestro)
+      credit_card_number CreditCardValidations::Factory.random(:visa)
     end
 
     trait :amex_card do
