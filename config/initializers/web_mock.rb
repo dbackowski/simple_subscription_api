@@ -51,19 +51,20 @@ end.to_return(
   body: {
     id: SecureRandom.hex(8),
     paid: false,
-    failure_message: nil
+    failure_message: 'insufficient_funds'
   }.to_json
 )
 
 # stub fake billing gateway call (for all other cards, reponse status: 200, paid: false)
 uri_template = Addressable::Template.new "http://fake-billing-gateway.com/{?credit_card_number}{&amount}"
 stub_request(:any, uri_template).with do |request|
-  true
+  detector = CreditCardValidations::Detector.new(request.uri.query_values['credit_card_number'])
+  !detector.valid? || (!detector.visa? && !detector.mastercard? && !detector.amex? && !detector.maestro?)
 end.to_return(
   status: 200,
   body: {
     id: SecureRandom.hex(8),
     paid: false,
-    failure_message: nil
+    failure_message: 'insufficient_funds'
   }.to_json
 )
