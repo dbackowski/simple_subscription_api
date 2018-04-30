@@ -5,15 +5,15 @@ FactoryBot.define do
     address FFaker::Address.street_address
     country FFaker::Address.country
 
-    trait :maestro_card do
+    trait :maestro do
       credit_card_number CreditCardValidations::Factory.random(:maestro)
     end
 
-    trait :visa_card do
+    trait :visa do
       credit_card_number CreditCardValidations::Factory.random(:visa)
     end
 
-    trait :amex_card do
+    trait :amex do
       credit_card_number CreditCardValidations::Factory.random(:amex)
     end
 
