@@ -58,6 +58,18 @@ RSpec.describe "Api::V1::Subscriptions", type: :request do
           expect(response).to have_http_status(422)
         end
       end
+
+      context "with timeout more than once" do
+        it "does not create a subscription and returns \"execution expired\"" do
+          expect{
+            post api_v1_subscriptions_path, params: {
+              data: FactoryBot.attributes_for(:subscription, :discover)
+            }
+          }.not_to change(Subscription, :count)
+          expect(json['errors']).to eq 'execution expired'
+          expect(response).to have_http_status(422)
+        end
+      end
     end
 
     context "with invalid card number" do
