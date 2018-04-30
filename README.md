@@ -88,3 +88,17 @@ curl -H "Content-Type: application/json" -X POST -d '{"data":{"credit_card_numbe
 curl -H "Content-Type: application/json" -X POST -d '{"data":{"credit_card_number":"6167883645588646","name":"Craig Brown","address": "81750 Johnston Crescent","country":"New Zealand"}}' http://localhost:3000/api/v1/subscriptions
 {"errors":"insufficient_funds"}
 ```
+
+* example with invalid credit card number
+
+```
+curl -H "Content-Type: application/json" -X POST -d '{"data":{"credit_card_number":"4640814081361","name":"Dwayne Kris","address": "883 Glover Shores","country":"Reunion"}}' http://localhost:3000/api/v1/subscriptions
+{"errors":["Credit card number is invalid"]}
+```
+
+* example with empty address
+
+```
+curl -H "Content-Type: application/json" -X POST -d '{"data":{"credit_card_number":"4640814081369","name":"Dwayne Kris","address": "","country":"Reunion"}}' http://localhost:3000/api/v1/subscriptions
+{"errors":["Address can't be blank"]}
+```
