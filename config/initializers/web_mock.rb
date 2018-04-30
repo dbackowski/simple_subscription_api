@@ -55,11 +55,18 @@ end.to_return(
   }.to_json
 )
 
+# stub fake billing gateway call (for all discover cards raise timeout)
+
+uri_template = Addressable::Template.new "http://fake-billing-gateway.com/{?credit_card_number}{&amount}"
+stub_request(:any, uri_template).with do |request|
+  CreditCardValidations::Detector.new(request.uri.query_values['credit_card_number']).discover?
+end.to_timeout
+
 # stub fake billing gateway call (for all other cards, reponse status: 200, paid: false)
 uri_template = Addressable::Template.new "http://fake-billing-gateway.com/{?credit_card_number}{&amount}"
 stub_request(:any, uri_template).with do |request|
   detector = CreditCardValidations::Detector.new(request.uri.query_values['credit_card_number'])
-  !detector.valid? || (!detector.visa? && !detector.mastercard? && !detector.amex? && !detector.maestro?)
+  !detector.valid? || (!detector.visa? && !detector.mastercard? && !detector.amex? && !detector.maestro? && !detector.discover?)
 end.to_return(
   status: 200,
   body: {

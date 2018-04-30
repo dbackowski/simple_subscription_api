@@ -20,5 +20,9 @@ FactoryBot.define do
     trait :mastercard do
       credit_card_number CreditCardValidations::Factory.random(:mastercard)
     end
+
+    trait :discover do
+      credit_card_number CreditCardValidations::Factory.random(:discover)
+    end
   end
 end
