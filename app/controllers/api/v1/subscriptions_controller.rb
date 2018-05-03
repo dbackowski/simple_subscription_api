@@ -16,6 +16,6 @@ class Api::V1::SubscriptionsController < ApplicationController
   private
 
   def subscription_params
-    params.require(:data).permit(:credit_card_number, :name, :address, :country)
+    params.fetch(:data, {}).permit(:credit_card_number, :name, :address, :country)
   end
 end
